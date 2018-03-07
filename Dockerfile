@@ -33,5 +33,5 @@ RUN mkdir -p /work
 # Entry point is an init-script since Docker doesn't allow service startups
 # The init script takes care of starting postgres and opends.
 WORKDIR /work
-ENTRYPOINT screen
+ENTRYPOINT bash
 
