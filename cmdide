@@ -34,12 +34,12 @@ container_id=$( docker ps -a --filter "ancestor=${ikey}:latest" -q | head -n1 )
 
 if [ ! -z $container_id ]
 then
-    clear
     echo "-- restarting container $container_id"
+    clear
     docker start -i $container_id
 else
-    clear
     echo "-- creating new container"
+    clear
     docker run \
         `# Run as interactive session`\
         -ti \
