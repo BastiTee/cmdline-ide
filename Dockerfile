@@ -19,7 +19,7 @@ ENV LC_ALL en_US.UTF-8
 RUN mkdir -p /bbc
 COPY lib/bastis-bash-commons/bbc* /bbc/
 RUN chmod a+x /bbc/bbc*
-RUN echo "source /bbc/bbc-bash-defaults" > /root/.bashrc
+COPY res/bashrc /root/.bashrc
 
 # Copy and setup shell rcs
 COPY lib/ubersettings/shell-rcs/.* /root/
@@ -34,3 +34,4 @@ RUN mkdir -p /work
 # The init script takes care of starting postgres and opends.
 WORKDIR /work
 ENTRYPOINT bash
+#ENTRYPOINT screen

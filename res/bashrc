@@ -1,0 +1,2 @@
+source /bbc/bbc-bash-defaults
+alias ide="bbc-screen dev"
