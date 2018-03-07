@@ -1,0 +1,6 @@
+[submodule "lib/bastis-bash-commons"]
+	path = lib/bastis-bash-commons
+	url = git@github.com:BastiTee/bastis-bash-commons.git
+[submodule "lib/ubersettings"]
+	path = lib/ubersettings
+	url = git@github.com:BastiTee/ubersettings
