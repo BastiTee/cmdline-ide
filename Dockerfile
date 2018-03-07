@@ -15,20 +15,20 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-# Setup working directory
-RUN mkdir /work
-COPY scripts/* /work
+# Copy and setup bastis bash commons
+RUN mkdir -p /bbc
+COPY lib/bastis-bash-commons/bbc* /bbc/
+RUN chmod a+x /bbc/bbc*
+RUN echo "source /bbc/bbc-bash-defaults" > /root/.bashrc
 
-# Setup path binaries
-ENV PATH \
-/root/:\
-$PATH
+# Copy and setup shell rcs
+COPY lib/ubersettings/shell-rcs/.* /root/
+RUN mkdir -p /root/.config/mc
+COPY lib/ubersettings/shell-rcs/ini /root/.config/mc/
 
-# Setup init files and rc's
-# COPY resources/root/.* /root/
-# COPY resources/root/mc-ini /root/.config/mc/ini
-# COPY resources/root/*.sh /root/
-# RUN chmod a+x /root/*.sh
+# Setup working environment
+ENV PATH /root/:/bbc/:$PATH
+RUN mkdir -p /work
 
 # Entry point is an init-script since Docker doesn't allow service startups
 # The init script takes care of starting postgres and opends.

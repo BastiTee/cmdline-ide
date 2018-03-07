@@ -12,6 +12,8 @@ touch CMDIDE_RUNNING
 # Always build container first
 if [ "$1" == "-b" ]
 then
+    git submodule update --remote
+    # docker rmi -f bastis-cmd-ide 2> /dev/null
     docker build -t $ikey .
     [ $? != 0 ] && {
         echo "Build-step failed. Will abort."
@@ -19,26 +21,32 @@ then
         exit 1
     }
 fi
+
+if [ -z $( docker images -q $ikey | head -n1 ) ]
+then
+    echo "-- image has not been created yet. run with -b option."
+    rm -f CMDIDE_RUNNING
+    exit 1
+fi
+
 # check if there is a container from that image
 container_id=$( docker ps -a --filter "ancestor=${ikey}:latest" -q | head -n1 )
 
 if [ ! -z $container_id ]
 then
+    clear
     echo "-- restarting container $container_id"
     docker start -i $container_id
 else
+    clear
     echo "-- creating new container"
     docker run \
-    `# Run as interactive session`\
-    -ti \
-    `# Expose LDAP port`\
-    -p 389:389 \
-    `# Expose postgres port`\
-    -p 5432:5432 \
-    `# Use host network`\
-    --net=host \
-    `# Reference image`\
-    $ikey
+        `# Run as interactive session`\
+        -ti \
+        `# Use host network`\
+        --net=host \
+        `# Reference image`\
+        $ikey
 fi
 
 # remove lock file
